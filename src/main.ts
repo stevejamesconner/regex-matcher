@@ -1,18 +1,40 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import {matcher} from './matcher'
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+    const regex: string = core.getInput('regex')
+    const data: string = core.getInput('data')
+    const flags: string = core.getInput('flags')
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const matches = await matcher(regex, data, flags)
+    let index = 0
 
-    core.setOutput('time', new Date().toTimeString())
-  } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message)
+    for (const match of matches) {
+      if (index === 10) {
+        return
+      }
+
+      if (index === 0) {
+        core.setOutput('match', match[0])
+      }
+
+      core.setOutput(`group${index}`, match[0])
+      index++
+    }
+  } catch (error: unknown) {
+    let errorMessage = ''
+
+    if (typeof error === 'string') {
+      errorMessage = error.toString()
+    } else if (error instanceof Error) {
+      errorMessage = error.message
+    } else {
+      errorMessage = 'Something went wrong processing the regular expression'
+    }
+
+    core.error(errorMessage)
+    core.setFailed(errorMessage)
   }
 }
 
