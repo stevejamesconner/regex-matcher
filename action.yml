@@ -11,7 +11,7 @@ inputs:
   flags:
     required: false
     description: 'Regex flags (https://javascript.info/regexp-introduction)'
-    default: ''
+    default: 'g'
 outputs:
   match:
     description: 'First match or empty string if no matches'
