@@ -8,20 +8,36 @@ async function run(): Promise<void> {
     const flags: string = core.getInput('flags')
 
     const matches = await matcher(regex, data, flags)
-    let index = 0
+    let matchIndex = 1
 
     for (const match of matches) {
-      if (index === 10) {
+      if (matchIndex === 4) {
         return
       }
 
-      if (index === 0) {
-        core.setOutput('match', match[0])
+      let matchValueIndex = 0
+      for (const matchValue of match) {
+        if (matchValueIndex === 4) {
+          return
+        }
+
+        if (matchValueIndex === 0) {
+          core.setOutput(`m${matchIndex}`, matchValue)
+          matchValueIndex++
+          continue
+        }
+
+        core.setOutput(`m${matchIndex}g${matchValueIndex}`, matchValue)
+        matchValueIndex++
       }
 
-      core.setOutput(`group${index}`, match[0])
-      index++
+      matchIndex++
     }
+
+    const jsonMatches = await matcher(regex, data, flags)
+    const jsonMatchesArray = Array.from(jsonMatches)
+    const jsonOutput = JSON.stringify(jsonMatchesArray)
+    core.setOutput('allMatches', jsonOutput)
   } catch (error: unknown) {
     let errorMessage = ''
 

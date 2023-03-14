@@ -13,28 +13,32 @@ inputs:
     description: 'Regex flags (https://javascript.info/regexp-introduction)'
     default: 'g'
 outputs:
-  match:
+  m1:
     description: 'First match or empty string if no matches'
-  group1:
-    description: 'Match group 1 or empty if no group matches'
-  group2:
-    description: 'Match group 2 or empty if no group matches'
-  group3:
-    description: 'Match group 3 or empty if no group matches'
-  group4:
-    description: 'Match group 4 or empty if no group matches'
-  group5:
-    description: 'Match group 5 or empty if no group matches'
-  group6:
-    description: 'Match group 6 or empty if no group matches'
-  group7:
-    description: 'Match group 7 or empty if no group matches'
-  group8:
-    description: 'Match group 8 or empty if no group matches'
-  group9:
-    description: 'Match group 9 or empty if no group matches'
+  m1g1:
+    description: 'First match first group or empty string if no group'
+  m1g2:
+    description: 'First match second group or empty string if no group'
+  m1g3:
+    description: 'First match third group or empty string if no group'
+  m2:
+    description: 'Second match or empty string if no matches'
+  m2g1:
+    description: 'Second match first group or empty string if no group'
+  m2g2:
+    description: 'Second match second group or empty string if no group'
+  m2g3:
+    description: 'Second match third group or empty string if no group'
+  m3:
+    description: 'Third match or empty string if no matches'
+  m3g1:
+    description: 'Third match first group or empty string if no group'
+  m3g2:
+    description: 'Third match second group or empty string if no group'
+  m3g3:
+    description: 'Third match third group or empty string if no group'
   allMatches:
-    description: 'Json array containing all of the matches (can include matches above the 9th match group)'
+    description: 'JSON string containing all matches'
 runs:
   using: 'node16'
   main: 'dist/index.js'
