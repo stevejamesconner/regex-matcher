@@ -1,11 +1,44 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'regex-matcher'
+description: 'Run a regular expression against a string and return the matches'
+author: 'Steve Conner'
 inputs:
-  milliseconds: # change this
+  regex:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'Regex pattern'
+  data:
+    required: true
+    description: 'String data to run regex against'
+  flags:
+    required: false
+    description: 'Regex flags (https://javascript.info/regexp-introduction)'
+    default: 'g'
+outputs:
+  m1:
+    description: 'First match or empty string if no matches'
+  m1g1:
+    description: 'First match first group or empty string if no group'
+  m1g2:
+    description: 'First match second group or empty string if no group'
+  m1g3:
+    description: 'First match third group or empty string if no group'
+  m2:
+    description: 'Second match or empty string if no matches'
+  m2g1:
+    description: 'Second match first group or empty string if no group'
+  m2g2:
+    description: 'Second match second group or empty string if no group'
+  m2g3:
+    description: 'Second match third group or empty string if no group'
+  m3:
+    description: 'Third match or empty string if no matches'
+  m3g1:
+    description: 'Third match first group or empty string if no group'
+  m3g2:
+    description: 'Third match second group or empty string if no group'
+  m3g3:
+    description: 'Third match third group or empty string if no group'
+  allMatches:
+    description: 'JSON string containing all matches'
 runs:
   using: 'node16'
   main: 'dist/index.js'

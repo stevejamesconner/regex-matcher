@@ -1,29 +1,35 @@
-import {wait} from '../src/wait'
-import * as process from 'process'
-import * as cp from 'child_process'
-import * as path from 'path'
+import {matcher} from '../src/matcher'
 import {expect, test} from '@jest/globals'
-
-test('throws invalid number', async () => {
-  const input = parseInt('foo', 10)
-  await expect(wait(input)).rejects.toThrow('milliseconds not a number')
+test('Extracts Number From String', async () => {
+  const matches = await matcher('\\d+', 'v1/develop', 'g')
+  const matchesArray = Array.from(matches)
+  expect(matchesArray.length).toBe(1)
+  expect(matchesArray[0].length).toBe(1)
+  expect(matchesArray[0][0]).toBe('1')
 })
 
-test('wait 500 ms', async () => {
-  const start = new Date()
-  await wait(500)
-  const end = new Date()
-  var delta = Math.abs(end.getTime() - start.getTime())
-  expect(delta).toBeGreaterThan(450)
+test('Extracts Major Number From Semver', async () => {
+  const matches = await matcher('(\\d+).', '2.3.4', 'g')
+  const matchesArray = Array.from(matches)
+  expect(matchesArray.length).toBe(2)
+  expect(matchesArray[0].length).toBe(2)
+  expect(matchesArray[0][0]).toBe('2.')
+  expect(matchesArray[0][1]).toBe('2')
+  expect(matchesArray[1].length).toBe(2)
+  expect(matchesArray[1][0]).toBe('3.')
+  expect(matchesArray[1][1]).toBe('3')
 })
 
-// shows how the runner will run a javascript action with env / stdout protocol
-test('test runs', () => {
-  process.env['INPUT_MILLISECONDS'] = '500'
-  const np = process.execPath
-  const ip = path.join(__dirname, '..', 'lib', 'main.js')
-  const options: cp.ExecFileSyncOptions = {
-    env: process.env
-  }
-  console.log(cp.execFileSync(np, [ip], options).toString())
+test('Regex Matches Converts to JSON', async () => {
+  const matches = await matcher('\\d+', 'v1/develop', 'g')
+  const matchesArray = Array.from(matches)
+  const jsonData = JSON.stringify(matchesArray)
+  expect(jsonData).toBe('[["1"]]')
+})
+
+test('Regex Matches Converts to JSON with Groups', async () => {
+  const matches = await matcher('(\\d+).', '2.3.4', 'g')
+  const matchesArray = Array.from(matches)
+  const jsonData = JSON.stringify(matchesArray)
+  expect(jsonData).toBe('[["2.","2"],["3.","3"]]')
 })
