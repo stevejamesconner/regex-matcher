@@ -1,6 +1,5 @@
-<p align="center">
-  <a href="https://github.com/stevejamesconner/regex-matcher/actions"><img alt="typescript-action status" src="https://github.com/stevejamesconner/regex-matcher/workflows/build-test/badge.svg"></a>
-</p>
+[![build-test](https://github.com/stevejamesconner/regex-matcher/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/stevejamesconner/regex-matcher/actions/workflows/test.yml)
+[![CodeQL](https://github.com/stevejamesconner/regex-matcher/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/stevejamesconner/regex-matcher/actions/workflows/codeql-analysis.yml)
 
 This Action allows for regular expression parsing and returns matches and match groups for use in downstream steps.
 This Action does not support named groups.
