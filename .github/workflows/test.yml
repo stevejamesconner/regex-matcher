@@ -44,3 +44,9 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: core.setFailed('Extracted regex was not present in the m1 output!')
+
+      - name: Dump Regex Extractions
+        shell: bash
+        run: |
+          echo ${{ steps.extractBranchVersion.outputs.m1 }}
+          echo ${{ steps.extractBranchVersion.outputs.allMatches }}
