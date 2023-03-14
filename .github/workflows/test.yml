@@ -10,7 +10,7 @@ jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set Node.js 16.x
         uses: actions/setup-node@v3.5.1
@@ -25,15 +25,22 @@ jobs:
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set Node.js 16.x
         uses: actions/setup-node@v3.5.1
         with:
           node-version: 16.x
 
-      - name: Call Action
+      - name: Extract Version From Branch
         uses: ./
+        id: extractBranchVersion
         with:
           regex: '\d+'
           data: 'v1/develop'
+
+      - name: Validate Extract Version From Branch
+        if: ${{ steps.extractBranchVersion.outputs.m1 == '' }}
+        uses: actions/github-script@v3
+        with:
+          script: core.setFailed('Extracted regex was not present in the m1 output!')
