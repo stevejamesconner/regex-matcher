@@ -37,6 +37,7 @@ async function run(): Promise<void> {
     const jsonMatches = await matcher(regex, data, flags)
     const jsonMatchesArray = Array.from(jsonMatches)
     const jsonOutput = JSON.stringify(jsonMatchesArray)
+
     core.setOutput('allMatches', jsonOutput)
   } catch (error: unknown) {
     let errorMessage = ''

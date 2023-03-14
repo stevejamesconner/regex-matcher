@@ -1,5 +1,5 @@
 name: 'build-test'
-on: # rebuild any PRs and main branch changes
+on:
   pull_request:
   push:
     branches:
@@ -7,7 +7,7 @@ on: # rebuild any PRs and main branch changes
       - 'feature/*'
 
 jobs:
-  build: # make sure build/ci work properly
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -22,7 +22,7 @@ jobs:
 
       - run: |
           npm run all
-  test: # make sure the action works on a clean machine without building
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -39,14 +39,36 @@ jobs:
           regex: '\d+'
           data: 'v1/develop'
 
-      - name: Validate Extract Version From Branch
+      - name: Fail If Regex Extraction Is Empty
         if: ${{ steps.extractBranchVersion.outputs.m1 == '' }}
         uses: actions/github-script@v3
         with:
-          script: core.setFailed('Extracted regex was not present in the m1 output!')
+          script: core.setFailed('Extracted regex was not present in the output!')
 
       - name: Dump Regex Extractions
         shell: bash
         run: |
           echo ${{ steps.extractBranchVersion.outputs.m1 }}
           echo ${{ steps.extractBranchVersion.outputs.allMatches }}
+
+      - name: Extract Version From Semver
+        uses: ./
+        id: extractSemanticVersion
+        with:
+          regex: '(\d+).'
+          data: '2.3.4'
+
+      - name: Fail If Regex Extraction Is Empty
+        if: ${{ steps.extractSemanticVersion.outputs.m1 == '' && steps.extractSemanticVersion.outputs.m2 == '' }}
+        uses: actions/github-script@v3
+        with:
+          script: core.setFailed('Extracted regex was not present in the output!')
+
+      - name: Dump Regex Extractions
+        shell: bash
+        run: |
+          echo ${{ steps.extractSemanticVersion.outputs.m1 }}
+          echo ${{ steps.extractSemanticVersion.outputs.m1g1 }}
+          echo ${{ steps.extractSemanticVersion.outputs.m2 }}
+          echo ${{ steps.extractSemanticVersion.outputs.m2g1 }}
+          echo ${{ steps.extractSemanticVersion.outputs.allMatches }}
