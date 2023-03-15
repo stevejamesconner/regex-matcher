@@ -41,7 +41,7 @@ jobs:
 
       - name: Fail If Regex Extraction Is Empty
         if: ${{ steps.extractBranchVersion.outputs.m1 == '' }}
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           script: core.setFailed('Extracted regex was not present in the output!')
 
@@ -60,7 +60,7 @@ jobs:
 
       - name: Fail If Regex Extraction Is Empty
         if: ${{ steps.extractSemanticVersion.outputs.m1 == '' && steps.extractSemanticVersion.outputs.m2 == '' }}
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           script: core.setFailed('Extracted regex was not present in the output!')
 
