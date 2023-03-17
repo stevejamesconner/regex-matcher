@@ -50,7 +50,7 @@ jobs:
           node-version: 16.x
 
       - name: Extract Numeric Version From Branch
-        uses: ./
+        uses: stevejamesconner/regex-matcher@v1.0.0
         id: extractBranchVersion
         with:
           regex: '\d+'
@@ -87,7 +87,7 @@ jobs:
           node-version: 16.x
 
       - name: Extract Major And Minor From Semver
-        uses: ./
+        uses: stevejamesconner/regex-matcher@v1.0.0
         id: extractSemanticVersion
         with:
           regex: '(\d+).'
